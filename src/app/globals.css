@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void-black: #000000;
+  --void-white: #ffffff;
+  --void-border: #1e1e1e;
+  --void-dim: #555555;
+  --void-hover: #0a0a0a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: 'Space Mono', 'Courier New', monospace;
+  -webkit-font-smoothing: antialiased;
+  cursor: default;
+  user-select: none;
+}
+
+/* ── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: #000; }
+::-webkit-scrollbar-thumb  { background: #222; }
+::-webkit-scrollbar-thumb:hover { background: #444; }
+
+/* ── Selection ──────────────────────────────────── */
+::selection { background: #fff; color: #000; }
+
+/* ── Glitch effect ──────────────────────────────── */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+}
+.glitch::before {
+  animation: glitch-r 3s infinite;
+  color: rgba(255,255,255,0.9);
+  text-shadow: -2px 0 rgba(255,0,0,0.4);
+}
+.glitch::after {
+  animation: glitch-b 3s infinite reverse;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 2px 0 rgba(0,200,255,0.4);
+}
+
+@keyframes glitch-r {
+  0%,94%,100% { clip-path: inset(100% 0 0 0); transform: none; }
+  95%  { clip-path: inset(20% 0 60% 0); transform: translateX(-4px) skewX(-1deg); }
+  96%  { clip-path: inset(55% 0 30% 0); transform: translateX(4px); }
+  97%  { clip-path: inset(80% 0 10% 0); transform: translateX(-2px); }
+  98%  { clip-path: inset(5% 0 75% 0);  transform: translateX(3px) skewX(1deg); }
+  99%  { clip-path: inset(40% 0 50% 0); transform: translateX(-4px); }
+}
+
+@keyframes glitch-b {
+  0%,94%,100% { clip-path: inset(100% 0 0 0); transform: none; }
+  95%  { clip-path: inset(60% 0 20% 0); transform: translateX(4px) skewX(1deg); }
+  96%  { clip-path: inset(10% 0 70% 0); transform: translateX(-4px); }
+  97%  { clip-path: inset(75% 0 5% 0);  transform: translateX(2px); }
+  98%  { clip-path: inset(30% 0 55% 0); transform: translateX(-3px) skewX(-1deg); }
+  99%  { clip-path: inset(50% 0 35% 0); transform: translateX(4px); }
+}
+
+/* ── Glitch flash (window open/close) ──────────── */
+@keyframes glitch-flash {
+  0%   { opacity: 1; transform: none; }
+  10%  { opacity: 0; transform: translateX(-4px) scaleY(1.02); }
+  20%  { opacity: 1; transform: translateX(3px); }
+  30%  { opacity: 0.6; transform: translateX(-2px) scaleY(0.99); }
+  40%  { opacity: 1; transform: none; }
+  100% { opacity: 1; transform: none; }
+}
+
+.glitch-open {
+  animation: glitch-flash 0.25s ease-out forwards;
+}
+
+/* ── Noise overlay ──────────────────────────────── */
+.noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* ── Scanline overlay ───────────────────────────── */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+}
+
+.scanline-sweep {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.025);
+  pointer-events: none;
+  z-index: 9999;
+  animation: scanline 12s linear infinite;
+}
+
+@keyframes scanline {
+  0%   { transform: translateY(-10px); }
+  100% { transform: translateY(100vh); }
+}
+
+/* ── Cursor blink ───────────────────────────────── */
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Flicker ────────────────────────────────────── */
+.flicker {
+  animation: flicker 6s infinite;
+}
+
+@keyframes flicker {
+  0%,86%,88%,90%,100% { opacity: 1; }
+  87%  { opacity: 0.1; }
+  89%  { opacity: 0.6; }
+  91%  { opacity: 0.0; }
+  92%  { opacity: 0.9; }
+}
+
+/* ── RGB split on hover ─────────────────────────── */
+.rgb-split:hover {
+  text-shadow: -2px 0 rgba(255,0,80,0.6), 2px 0 rgba(0,200,255,0.6);
+  transition: text-shadow 0.1s;
+}
+
+/* ── Screensaver ────────────────────────────────── */
+@keyframes ss-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(12px, -8px) scale(1.01); }
+  50%  { transform: translate(-8px, 12px) scale(0.99); }
+  75%  { transform: translate(6px, 6px) scale(1.01); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes ss-glitch {
+  0%,90%,100% { clip-path: none; transform: none; opacity:1; }
+  91% { clip-path: inset(30% 0 50% 0); transform: translateX(-8px); opacity:0.7; }
+  92% { clip-path: inset(70% 0 10% 0); transform: translateX(8px); opacity:0.9; }
+  93% { clip-path: inset(10% 0 80% 0); transform: translateX(-4px); opacity:0.6; }
+  94% { clip-path: none; transform: none; opacity:1; }
+}
+
+.ss-text {
+  animation: ss-drift 14s ease-in-out infinite, ss-glitch 8s infinite;
+}
+
+/* ── Window chrome ──────────────────────────────── */
+.window-chrome {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.96);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 24px 80px rgba(0,0,0,0.8);
+}
+
+.window-chrome.focused {
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+/* ── Desktop icon ───────────────────────────────── */
+.desktop-icon:hover .icon-label {
+  text-decoration: underline;
+}
+
+/* ── Typewriter ─────────────────────────────────── */
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 0.4s steps(40) forwards;
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
