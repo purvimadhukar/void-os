@@ -56,7 +56,7 @@ export default function Desktop() {
           return (
             <button
               key={appId}
-              onDoubleClick={() => openWindow(appId)}
+              onClick={() => openWindow(appId)}
               className="desktop-icon flex items-center gap-3 px-3 py-1.5 hover:bg-white/5 transition-colors group text-left w-40"
             >
               <span className="text-[11px] font-mono text-white/25 group-hover:text-white/60 w-6 text-center flex-shrink-0">
